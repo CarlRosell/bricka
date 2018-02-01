@@ -24,7 +24,9 @@ const generateInitialState = ({
     lastLetter,
     isNumeric,
     turn: turn + 1,
-    active: isNumeric ? `${firstNumber}-${lastNumber}` : `${firstLetter}-${lastLetter}`
+    active: isNumeric
+      ? `${firstNumber}-${lastNumber}`
+      : `${firstLetter}-${lastLetter}`
   };
 };
 
@@ -37,7 +39,7 @@ export default class Bingo extends React.Component {
       isNumeric: true,
       firstLetter: 'a',
       lastLetter: 'i',
-      turn: 0,
+      turn: 0
     });
   }
 
@@ -45,35 +47,52 @@ export default class Bingo extends React.Component {
     this.setState(s => generateInitialState(s));
   };
 
-  updateSettings = ({isNumeric, firstNumber, lastNumber, firstLetter, lastLetter}) => {
+  updateSettings = ({ isNumeric, first, last }) => {
     if (isNumeric === true) {
-      this.setState(s => generateInitialState({ ...s, isNumeric, firstNumber, lastNumber }));
+      this.setState(s =>
+        generateInitialState({
+          ...s,
+          isNumeric,
+          firstNumber: first,
+          lastNumber: last
+        })
+      );
     } else {
-      this.setState(s => generateInitialState({ ...s, isNumeric, firstLetter, lastLetter }));
+      this.setState(s =>
+        generateInitialState({
+          ...s,
+          isNumeric,
+          firstLetter: first,
+          lastLetter: last
+        })
+      );
     }
   };
 
+  renderButton = (isNumeric, first, last) => (
+    <button
+      className={this.state.active === `${first}-${last}` ? 'active' : ''}
+      onClick={() => this.updateSettings({ isNumeric, first, last })}
+    >
+      {`${first}-${last}`}
+    </button>
+  );
+
   render() {
-    const {
-      shuffledChars,
-      turn,
-      active,
-    } = this.state;
+    const { shuffledChars, turn } = this.state;
     return (
       <div>
-        <button className={active === '0-9' ? 'active' : '' } onClick={() => this.updateSettings({isNumeric: true, firstNumber: 1, lastNumber: 10})}>1-10</button>
-        <button className={active === '10-20' ? 'active' : '' } onClick={() => this.updateSettings({isNumeric: true, firstNumber: 10, lastNumber: 20})}>10-20</button>
-        <button className={active === '1-20' ? 'active' : '' } onClick={() => this.updateSettings({isNumeric: true, firstNumber: 1, lastNumber: 20})}>1-20</button>
-        <button className={active === 'a-i' ? 'active' : '' } onClick={() => this.updateSettings({isNumeric: false, firstLetter: 'a', lastLetter: 'i'})}>A-I</button>
-        <button className={active === 'j-s' ? 'active' : '' } onClick={() => this.updateSettings({isNumeric: false, firstLetter: 'j', lastLetter: 's'})}>J-S</button>
-        <button className={active === 't-ö' ? 'active' : '' } onClick={() => this.updateSettings({isNumeric: false, firstLetter: 't', lastLetter: 'ö'})}>T-Ö</button>
-        <button className={active === 'a-ö' ? 'active' : '' } onClick={() => this.updateSettings({isNumeric: false, firstLetter: 'a', lastLetter: 'ö'})}>A-Ö</button>
+        {this.renderButton(true, 1, 10)}
+        {this.renderButton(true, 10, 20)}
+        {this.renderButton(true, 1, 20)}
+        {this.renderButton(false, 'a', 'i')}
+        {this.renderButton(false, 'j', 's')}
+        {this.renderButton(false, 't', 'ö')}
+        {this.renderButton(false, 'a', 'ö')}
         <div className="Game">
           <div className="Container">
-            {shuffledChars.map((char) => {
-              return (
-                <Cell key={`${turn}_${char}`} char={char} />
-              );
+            {shuffledChars.map(char => {
+              return <Cell key={`${turn}_${char}`} char={char} />;
             })}
           </div>
         </div>
