@@ -1,0 +1,40 @@
+button,
+input {
+  text-transform: uppercase;
+  border: 2px solid teal;
+  padding: 10px;
+  margin-right: 20px;
+  margin-bottom: 10px;
+  border-radius: 3px;
+  background: white;
+  color: teal;
+  font-size: 16px;
+  outline: none;
+}
+
+button[disabled] {
+  opacity: 0.6;
+}
+button.active {
+  color: white;
+  background: teal;
+}
+
+input {
+  width: 70px;
+}
+
+.Game {
+  padding: 20px 0;
+}
+
+.Container {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  height: 80vh;
+  border: 1px solid teal;
+}
+.Container>* {
+  flex: 1 1 33%;
+}

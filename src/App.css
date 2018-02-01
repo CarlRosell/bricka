@@ -1,0 +1,12 @@
+html {
+  min-width: 100vw;
+  min-height: 100vh;
+  background: linear-gradient(-45deg, teal, lightblue);
+  padding: 20px;
+}
+
+*,
+*:before,
+*::after {
+  box-sizing: border-box;
+}
